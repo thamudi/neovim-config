@@ -31,10 +31,19 @@ vim.opt.termguicolors = true -- Enable true color support
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Open netrw (file explorer)
 
 -- Save keymap
-vim.keymap.set('n', '<C-s>', ':w<CR>')
-vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>')
+vim.keymap.set('n', '<C-s>', ':w<CR>',  {desc = "Save in normal mode"})
+vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>', {desc = "Save while in insert mode"})
 -- Quit keymap
-vim.keymap.set('n', '<C-q>', ':q<CR>')
+vim.keymap.set('n', '<C-q>', ':q<CR>', {desc = "Quit"})
+-- Move to next buffer
+vim.keymap.set('n', '<A-Right>', ':bnext<CR>', { desc = "Next buffer" })
+vim.keymap.set('n', '<A-l>', ':bnext<CR>', { desc = "Next buffer" })
+-- Move to previous buffer
+vim.keymap.set('n', '<A-Left>', ':bprevious<CR>', { desc = "Previous buffer" })
+vim.keymap.set('n', '<A-h>', ':bprevious<CR>', { desc = "Previous buffer" })
+
+-- Define a keymap to toggle nvim-tree
+vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = "Toggle nvim-tree" })
 
 -- Toggle comment for visual mode
 -- vim.keymap.set('v', '<C-/>', function()
@@ -80,4 +89,3 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     command = ":lua vim.lsp.buf.format()",
 })
-
