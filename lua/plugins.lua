@@ -19,27 +19,36 @@ return {
             vim.cmd [[colorscheme vscode]]
         end
     },
+    -- null-ls
+    {
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+            require("null-ls").setup {}
+        end
 
-    -- {
-    --     "Mofiqul/vscode.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         require('vscode').setup({
-    --         	style = "dark"
-    --         })
-    --         vim.cmd [[colorscheme vscode.nvim]]
-    --     end
-    -- },
-
+    },
     -- LSP
     {
-        "neovim/nvim-lspconfig",
-        config = function()
-            require("lspconfig").lua_ls.setup {}
-        end
-    },
+      "neovim/nvim-lspconfig",
+      config = function()
+          local lspconfig = require("lspconfig")
+          -- Lua LSP setup
+          lspconfig.lua_ls.setup {}
 
+          -- YAML LSP setup
+          lspconfig.yamlls.setup {
+              settings = {
+                  yaml = {
+                      schemas = {
+                          ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.25.0-standalone-strict/all.json"] = "k8s-*.yaml",
+                          ["https://json.schemastore.org/kustomization"] = "kustomization.yaml",
+                          ["https://json.schemastore.org/helmfile"] = "helmfile.yaml",
+                      },
+                  },
+              },
+          }
+      end
+    },
     -- Telescope
     {
         "nvim-telescope/telescope.nvim",
