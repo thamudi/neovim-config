@@ -45,6 +45,9 @@ vim.keymap.set('n', '<A-h>', ':bprevious<CR>', { desc = "Previous buffer" })
 -- Define a keymap to toggle nvim-tree
 vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = "Toggle nvim-tree" })
 
+-- File finder (like Ctrl+P in VS Code)
+vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files, { desc = "Find files" })
+
 -- Toggle comment for visual mode
 -- vim.keymap.set('v', '<C-/>', function()
 --   -- Get the selected lines
@@ -87,5 +90,5 @@ vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = 
 -- Auto format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
-    command = ":lua vim.lsp.buf.format()",
+    command = ":lua print('Formatting on save!') vim.lsp.buf.format()",
 })
