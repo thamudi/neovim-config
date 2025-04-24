@@ -34,3 +34,11 @@ Example: export PATH=/usr/local/bin/lua-language-server-3.14.0-linux-x64/bin
 - [nvim docs](https://neovim.io/doc/)
 - [nvim lua](https://github.com/nanotee/nvim-lua-guide)
 - [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+
+## Plugin requirements
+- null-ls requires nodejs and prettier to be installed  
+
+```bash
+npm install -g prettier
+```
