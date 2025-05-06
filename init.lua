@@ -18,6 +18,7 @@ require("lazy").setup("plugins") -- Load plugins from plugins.lua
 
 -- Settings (must be after plugin setup)
 -- filepath: ~/.config/nvim/init.lua
+
 vim.opt.number = true          -- Show line numbers
 vim.opt.relativenumber = false -- Show relative line numbers
 vim.opt.tabstop = 4
@@ -31,10 +32,10 @@ vim.opt.termguicolors = true -- Enable true color support
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex) -- Open netrw (file explorer)
 
 -- Save keymap
-vim.keymap.set('n', '<C-s>', ':w<CR>',  {desc = "Save in normal mode"})
-vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>', {desc = "Save while in insert mode"})
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = "Save in normal mode" })
+vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>', { desc = "Save while in insert mode" })
 -- Quit keymap
-vim.keymap.set('n', '<C-q>', ':q<CR>', {desc = "Quit"})
+vim.keymap.set('n', '<C-q>', ':q<CR>', { desc = "Quit" })
 -- Move to next buffer
 vim.keymap.set('n', '<A-Right>', ':bnext<CR>', { desc = "Next buffer" })
 vim.keymap.set('n', '<A-l>', ':bnext<CR>', { desc = "Next buffer" })
@@ -42,50 +43,25 @@ vim.keymap.set('n', '<A-l>', ':bnext<CR>', { desc = "Next buffer" })
 vim.keymap.set('n', '<A-Left>', ':bprevious<CR>', { desc = "Previous buffer" })
 vim.keymap.set('n', '<A-h>', ':bprevious<CR>', { desc = "Previous buffer" })
 
+-- Move line up/down in Normal mode
+vim.keymap.set('n', '<A-Up>', ':m .-2<CR>', { desc = "Move line up" })
+vim.keymap.set('n', '<A-Down>', ':m .+1<CR>', { desc = "Move line down" })
+
+-- Move selected lines up/down in Visual mode
+vim.keymap.set('v', '<A-Up>', ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
+vim.keymap.set('v', '<A-Down>', ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
+
+-- Toggle comment in Normal and Visual mode
+vim.keymap.set("n", "<C-/>", function() require('Comment.api').toggle.linewise.current() end, { desc = "Toggle comment current line", noremap = true, silent = true })
+vim.keymap.set("v", "<C-/>", function() require('Comment.api').toggle.linewise(vim.fn.visualmode()) end, { desc = "Toggle comment selected lines", noremap = true, silent = true })
+
+
+
 -- Define a keymap to toggle nvim-tree
 vim.keymap.set('n', '<leader>e', require("nvim-tree.api").tree.toggle, { desc = "Toggle nvim-tree" })
 
 -- File finder (like Ctrl+P in VS Code)
 vim.keymap.set('n', '<C-p>', require('telescope.builtin').find_files, { desc = "Find files" })
-
--- Toggle comment for visual mode
--- vim.keymap.set('v', '<C-/>', function()
---   -- Get the selected lines
---   local start_line = vim.fn.line("'<")
---   local end_line = vim.fn.line("'>")
-
---   -- Get the comment string for the current filetype
---   local comment_string = vim.api.nvim_eval('&commentstring')
---   local uncomment_string = string.gsub(comment_string, '%%s', '')
-
---   -- Check if the first line is commented or not
---   if start_line > 0 and end_line > 0 then -- Check if the buffer is not empty
---     vim.api.nvim_win_set_cursor(0, {start_line, 0})
---     vim.cmd("normal ^")
---     local current_line = vim.fn.getline('.')
---     local is_commented = string.sub(current_line, 1, string.len(uncomment_string)) == uncomment_string
-
---     -- Toggle comment for each line
---     for line = start_line, end_line do
---       if line <= vim.fn.line("$") then  -- Check if the line exists
---         vim.api.nvim_win_set_cursor(0, {line, 0})
---         vim.cmd("normal ^")
---         local current_line = vim.fn.getline('.')
-
---         if is_commented then
---           -- Uncomment the line
---           if string.sub(current_line, 1, string.len(uncomment_string)) == uncomment_string then
---             local uncommented_line = string.sub(current_line, string.len(uncomment_string) + 1)
---             vim.api.nvim_put({uncommented_line}, 'l', false, true)
---           end
---         else
---           -- Comment the line
---           vim.api.nvim_put({uncomment_string}, 'l', false, true)
---         end
---       end
---     end
---   end
--- end)
 
 -- Auto format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
