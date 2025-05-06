@@ -34,25 +34,25 @@ return {
     },
     -- LSP
     {
-      "neovim/nvim-lspconfig",
-      config = function()
-          local lspconfig = require("lspconfig")
-          -- Lua LSP setup
-          lspconfig.lua_ls.setup {}
+        "neovim/nvim-lspconfig",
+        config = function()
+            local lspconfig = require("lspconfig")
+            -- Lua LSP setup
+            lspconfig.lua_ls.setup {}
 
-          -- YAML LSP setup
-          lspconfig.yamlls.setup {
-              settings = {
-                  yaml = {
-                      schemas = {
-                          ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.25.0-standalone-strict/all.json"] = "k8s-*.yaml",
-                          ["https://json.schemastore.org/kustomization"] = "kustomization.yaml",
-                          ["https://json.schemastore.org/helmfile"] = "helmfile.yaml",
-                      },
-                  },
-              },
-          }
-      end
+            -- YAML LSP setup
+            lspconfig.yamlls.setup {
+                settings = {
+                    yaml = {
+                        schemas = {
+                            ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.25.0-standalone-strict/all.json"] = "k8s-*.yaml",
+                            ["https://json.schemastore.org/kustomization"] = "kustomization.yaml",
+                            ["https://json.schemastore.org/helmfile"] = "helmfile.yaml",
+                        },
+                    },
+                },
+            }
+        end
     },
     -- Telescope
     {
@@ -72,8 +72,39 @@ return {
         "nvim-treesitter/nvim-treesitter-context",
         lazy = false,
         config = function()
-            require("treesitter-context").setup {}
+            require("treesitter-context").setup {
+                ensure_installed = { "lua", "yaml", "json", "vimdoc", "vim", "markdown", "markdown_inline" },
+                highlight = {
+                    enable = true,
+                    disable = { "markdown" },
+                },
+                indent = {
+                    enable = true,
+                    disable = { "yaml" },
+                }
+            }
         end
+    },
+    -- Sticky scroll / context viewer
+    {
+        "nvim-treesitter/nvim-treesitter-context",
+        opts = {
+            -- Configuration options for nvim-treesitter-context
+            -- enable = true, -- Enable this plugin (the default)
+            max_lines = 0, -- How many lines of context to show (0=auto)
+            -- min_window_height = 0, -- Minimum window height to enable plugin
+            -- line_numbers = true,
+            -- multiline_threshold = 20, -- Maximum number of lines to show for a single context
+            -- trim_scope = 'outer', -- Which context lines to discard first when trimming
+            -- mode = 'cursor',  -- Line used to calculate context. Choices: 'cursor', 'topline'
+            -- separator = nil, -- Separator between context and content
+            -- zindex = 20, -- The Z-index of the context window
+            -- on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+        },
+        -- Optional: Add keymap to toggle the context display
+        -- keys = {
+        --   { "<leader>sc", function() require("treesitter-context").toggle() end, desc = "Toggle Sticky Context" },
+        -- },
     },
     -- Git
     {
@@ -165,4 +196,12 @@ return {
             vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
         end
     },
+    -- add this to your lua/plugins.lua, lua/plugins/init.lua,  or the file you keep your other plugins:
+    {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        }
+    }
+
 }
