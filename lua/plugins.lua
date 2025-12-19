@@ -1,4 +1,4 @@
--- filepath: ~/.config/nvim/lua/plugins.lua
+-- },
 return {
     -- Example plugins
     { "nvim-lua/popup.nvim" },   -- An implementation of the Popup API from vim in Neovim
@@ -10,17 +10,17 @@ return {
     --     vim.cmd[[colorscheme gruvbox-baby]]
     -- end },
 
-    {
-      "Mofiqul/vscode.nvim",
-      lazy = false,
-      priority = 1000,
-      config = function()
-        require("vscode").setup {
-          transparent = true,
-        }
-        vim.cmd [[colorscheme vscode]]
-      end
-    },
+    -- {
+    -- "Mofiqul/vscode.nvim",
+    -- lazy = false,
+    -- priority = 1000,
+    -- config = function()
+    -- require("vscode").setup {
+    -- transparent = true,
+    -- }
+    -- vim.cmd [[colorscheme vscode]]
+    -- end
+    -- },
     -- null-ls
     {
         "jose-elias-alvarez/null-ls.nvim",
@@ -188,14 +188,6 @@ return {
         "ThePrimeagen/harpoon",
         config = function()
             require("harpoon").setup {}
-        end
-    },
-    -- GitHub Copilot
-    {
-        "github/copilot.vim",
-        config = function()
-            vim.g.copilot_no_tab_map = true
-            vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { expr = true, silent = true })
         end
     },
     -- add this to your lua/plugins.lua, lua/plugins/init.lua,  or the file you keep your other plugins:
