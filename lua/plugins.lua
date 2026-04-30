@@ -5,35 +5,48 @@ return {
     { "nvim-lua/plenary.nvim" }, -- Useful lua functions used ny lots of plugins
 
     -- Colorscheme
-    -- { "luisiacc/gruvbox-baby", lazy = false, priority = 1000, config = function()
-    --     vim.g.gruvbox_baby_background_color = "dark"
-    --     vim.cmd[[colorscheme gruvbox-baby]]
-    -- end },
-
-    -- {
-    -- "Mofiqul/vscode.nvim",
-    -- lazy = false,
-    -- priority = 1000,
-    -- config = function()
-    -- require("vscode").setup {
-    -- transparent = true,
-    -- }
-    -- vim.cmd [[colorscheme vscode]]
-    -- end
-    -- },
-    -- null-ls
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "Shatur/neovim-ayu",
+        lazy = false,
+        priority = 1000,
         config = function()
-            local null_ls = require("null-ls")
-            null_ls.setup {
-                sources = {
-                    null_ls.builtins.formatting.prettier.with({ filetypes = { "yaml" } }),
-                }
-            }
-        end
+            local ayu = require("ayu")
+            ayu.setup({
+                mirage = false, -- false = dark, true = mirage variant
+                overrides = {},
+            })
 
+            local function set_theme()
+                local handle = io.popen("defaults read -g AppleInterfaceStyle 2>/dev/null")
+                local result = handle:read("*a")
+                handle:close()
+                if result:match("Dark") then
+                    ayu.colorscheme("dark")
+                else
+                    ayu.colorscheme("light")
+                end
+            end
+
+            set_theme()
+
+            -- Re-check every time nvim gains focus
+            vim.api.nvim_create_autocmd("FocusGained", {
+                callback = set_theme,
+            })
+        end
     },
+    -- {
+    --     "jose-elias-alvarez/null-ls.nvim",
+    --     config = function()
+    --         local null_ls = require("null-ls")
+    --         null_ls.setup {
+    --             sources = {
+    --                 null_ls.builtins.formatting.prettier.with({ filetypes = { "yaml" } }),
+    --             }
+    --         }
+    --     end
+
+    -- },
     -- LSP
     {
         "neovim/nvim-lspconfig",
@@ -153,7 +166,23 @@ return {
     {
         "nvim-lualine/lualine.nvim",
         config = function()
-            require("lualine").setup {}
+            require("lualine").setup {
+                options = {
+                    theme = {
+                        normal = { a = { bg = "none" }, b = { bg = "none" }, c = { bg = "none" } },
+                        insert = { a = { bg = "none" }, b = { bg = "none" }, c = { bg = "none" } },
+                        visual = { a = { bg = "none" }, b = { bg = "none" }, c = { bg = "none" } },
+                        replace = { a = { bg = "none" }, b = { bg = "none" }, c = { bg = "none" } },
+                        command = { a = { bg = "none" }, b = { bg = "none" }, c = { bg = "none" } },
+                    },
+                },
+                sections = {
+                    lualine_a = {
+                        { "mode" },
+                        { function() return "" end },
+                    },
+                },
+            }
         end
     },
     -- Buffer Line
