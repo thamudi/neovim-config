@@ -52,8 +52,10 @@ vim.keymap.set('v', '<A-Up>', ":m '<-2<CR>gv=gv", { desc = "Move selected lines 
 vim.keymap.set('v', '<A-Down>', ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
 
 -- Toggle comment in Normal and Visual mode
-vim.keymap.set("n", "<C-/>", function() require('Comment.api').toggle.linewise.current() end, { desc = "Toggle comment current line", noremap = true, silent = true })
-vim.keymap.set("v", "<C-/>", function() require('Comment.api').toggle.linewise(vim.fn.visualmode()) end, { desc = "Toggle comment selected lines", noremap = true, silent = true })
+vim.keymap.set("n", "<C-/>", function() require('Comment.api').toggle.linewise.current() end,
+    { desc = "Toggle comment current line", noremap = true, silent = true })
+vim.keymap.set("v", "<C-/>", function() require('Comment.api').toggle.linewise(vim.fn.visualmode()) end,
+    { desc = "Toggle comment selected lines", noremap = true, silent = true })
 
 
 
@@ -68,3 +70,22 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     command = ":lua print('Formatting on save!') vim.lsp.buf.format()",
 })
+
+-- Transparent background
+-- vim.opt.background = "transparent"
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+        vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+        vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+        vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+        vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+    end,
+})
+-- Force it immediately as well
+vim.defer_fn(function()
+    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+    vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+end, 100)
